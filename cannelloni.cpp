@@ -77,20 +77,20 @@ void printUsage() {
   std::cout << "\t\t\t b : enable debugging of internal buffer structures" << std::endl;
   std::cout << "\t\t\t t : enable debugging of internal timers" << std::endl;
   std::cout << "\t -h      \t\t display this help text" << std::endl;
-  std::cout << "Mandatory options:" << std::endl;
-  std::cout << "\t -R IP   \t\t remote IP" << std::endl;
+  // std::cout << "Mandatory options:" << std::endl;
+  std::cout << "\t -R IP   \t\t remote IP [default to any]" << std::endl;
 }
 
 int main(int argc, char** argv) {
   int opt;
-  bool remoteIPSupplied = false;
+  bool remoteIPSupplied = true; // no more needed (use any when not specified)
   bool sortUDP = false;
   bool checkPeer = true;
   bool useSCTP = false;
 #ifdef SCTP_SUPPORT
   SCTPThreadRole sctpRole = CLIENT;
 #endif
-  char remoteIP[INET_ADDRSTRLEN] = "127.0.0.1";
+  char remoteIP[INET_ADDRSTRLEN] = "0.0.0.0"; // was 127.0.0.1 now any
   uint16_t remotePort = 20000;
   char localIP[INET_ADDRSTRLEN] = "0.0.0.0";
   uint16_t localPort = 20000;

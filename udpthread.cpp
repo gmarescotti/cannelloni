@@ -106,6 +106,16 @@ bool UDPThread::parsePacket(uint8_t *buffer, uint16_t len, struct sockaddr_in &c
             << ", which is not set as a remote. Restart with -p argument to override." << std::endl;
     } else {
 
+        // If remote is any, and checkpeer is false =>
+        //  Change remote address to client address!
+        if ((m_remoteAddr.sin_addr.s_addr == htonl(INADDR_ANY)) && (clientAddr.sin_addr.s_addr != htonl(INADDR_LOOPBACK))) {
+            memcpy(&(m_remoteAddr.sin_addr), &(clientAddr.sin_addr), sizeof(struct in_addr));
+            linfo << "Received a packet from " << clientAddrStr
+                << ", which is not set as a remote. From now on use it." << std::endl;
+        } else {
+            linfo << "Received a packet from " << clientAddrStr << std::endl;
+        }
+
         if (m_debugOptions.udp) {
             linfo << "Received " << std::dec << len << " Bytes from Host " << clientAddrStr
                     << ":" << ntohs(clientAddr.sin_port) << std::endl;
