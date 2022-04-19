@@ -99,8 +99,8 @@ typedef __u32 can_err_mask_t;
  */
 struct can_frame {
 	canid_t can_id;  /* 32 bit CAN_ID + EFF/RTR/ERR flags */
-	__u8    can_dlc; /* frame payload length in byte (0 .. CAN_MAX_DLEN) */
-	__u8    data[CAN_MAX_DLEN] __attribute__((aligned(8)));
+    __u8 can_dlc; /* frame payload length in byte (0 .. CAN_MAX_DLEN) */
+    __declspec(align(8)) __u8 data[CAN_MAX_DLEN];
 };
 
 /*
@@ -131,14 +131,14 @@ struct can_frame {
  * @__res1: reserved / padding
  * @data:   CAN FD frame payload (up to CANFD_MAX_DLEN byte)
  */
-struct canfd_frame {
+PACK(struct canfd_frame {
 	canid_t can_id;  /* 32 bit CAN_ID + EFF/RTR/ERR flags */
 	__u8    len;     /* frame payload length in byte */
 	__u8    flags;   /* additional flags for CAN FD */
 	__u8    __res0;  /* reserved / padding */
 	__u8    __res1;  /* reserved / padding */
-	__u8    data[CANFD_MAX_DLEN] __attribute__((aligned(8)));
-};
+    __declspec(align(8)) __u8    data[CANFD_MAX_DLEN];
+});
 
 #define CAN_MTU		(sizeof(struct can_frame))
 #define CANFD_MTU	(sizeof(struct canfd_frame))
@@ -162,7 +162,7 @@ struct canfd_frame {
  */
 struct sockaddr_can {
 	__kernel_sa_family_t can_family;
-	int         can_ifindex;
+    int can_ifindex;
 	union {
 		/* transport protocol class address information (e.g. ISOTP) */
 		struct { canid_t rx_id, tx_id; } tp;

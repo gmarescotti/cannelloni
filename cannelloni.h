@@ -35,7 +35,7 @@ namespace cannelloni {
 
 enum op_codes {DATA, ACK, NACK};
 
-struct __attribute__((__packed__)) CannelloniDataPacket {
+PACK(struct CannelloniDataPacket {
   /* Version */
   uint8_t version;
   /* OP Code */
@@ -44,7 +44,7 @@ struct __attribute__((__packed__)) CannelloniDataPacket {
   uint8_t seq_no;
   /* Number of CAN Messages in this packet */
   uint16_t count;
-};
+});
 
 /*
  * Since we are buffering CAN Frames, it is a good idea
